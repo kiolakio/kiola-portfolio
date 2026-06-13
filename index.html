@@ -381,31 +381,9 @@
       color: var(--fg);
     }
 
-    .editable-text {
-      border-radius: var(--radius-sm);
-      outline: none;
-      cursor: text;
-      transition: background var(--motion-fast) var(--ease-standard), box-shadow var(--motion-fast) var(--ease-standard);
-    }
-
-    .editable-text:hover {
-      background: color-mix(in oklab, var(--surface-warm), transparent 42%);
-      box-shadow: 0 0 0 1px var(--border-soft);
-    }
-
-    .editable-text:focus {
-      background: var(--surface);
-      box-shadow: var(--focus-ring);
-    }
-
-    .editable-block {
+    .locked-block {
       display: block;
       white-space: pre-wrap;
-    }
-
-    [contenteditable="plaintext-only"]:empty::before {
-      content: attr(data-edit-placeholder);
-      color: var(--meta);
     }
 
     .mobile-picker {
@@ -806,14 +784,13 @@
     }
 
     .carousel-viewport {
-      overflow-x: auto;
+      overflow: hidden;
       overscroll-behavior-x: contain;
       scrollbar-width: none;
       border-radius: var(--radius-lg);
       cursor: grab;
-      touch-action: pan-y;
+      touch-action: pan-y pinch-zoom;
       container-type: inline-size;
-      -webkit-overflow-scrolling: touch;
     }
 
     .carousel-viewport::-webkit-scrollbar {
@@ -831,10 +808,16 @@
       grid-auto-columns: minmax(220px, 94cqw);
       gap: 2px;
       padding: 0;
+      width: max-content;
+      min-width: 100%;
+      will-change: transform;
+      transform: translate3d(var(--carousel-offset, 0px), 0, 0);
+      backface-visibility: hidden;
     }
 
     .carousel-slide {
       min-width: 0;
+      width: min(94cqw, 720px);
       overflow: hidden;
       border: 0;
       border-radius: var(--radius-sm);
@@ -842,6 +825,7 @@
       opacity: 0;
       transform: translateY(8px);
       animation: mediaFade var(--motion-base) var(--ease-standard) forwards;
+      contain: content;
     }
 
     .carousel-slide img {
@@ -1106,6 +1090,14 @@
         grid-template-columns: 1fr;
       }
 
+      .carousel-track {
+        grid-auto-columns: minmax(76vw, 88vw);
+      }
+
+      .carousel-slide {
+        width: min(88vw, 520px);
+      }
+
       .preview-top {
         display: grid;
       }
@@ -1295,7 +1287,6 @@
     const imageLightbox = document.querySelector("#imageLightbox");
     const lightboxImage = document.querySelector("#lightboxImage");
     const lightboxClose = document.querySelector("#lightboxClose");
-    const editableStoreKey = "kiola-portfolio-inline-edits-v1";
     let textEdits = loadTextEdits();
     const titleReplacements = new Map(
       [...films, ...projects, ...scripts].flatMap((item) => {
@@ -1339,19 +1330,11 @@
     }
 
     function loadTextEdits() {
-      try {
-        return JSON.parse(window.localStorage.getItem(editableStoreKey) || "{}");
-      } catch (error) {
-        return {};
-      }
+      return {};
     }
 
     function saveTextEdits() {
-      try {
-        window.localStorage.setItem(editableStoreKey, JSON.stringify(textEdits));
-      } catch (error) {
-        // Local storage can be unavailable in restricted previews; editing still works for the session.
-      }
+      return;
     }
 
     function normalizeTitleValue(value) {
@@ -1472,15 +1455,13 @@
     }
 
     function editableValue(key, fallback) {
-      const value = hasTextEdit(key) ? textEdits[key] : String(fallback || "");
+      const value = String(fallback || "");
       return key.startsWith("item:") && key.endsWith(":title") ? normalizeTitleValue(value) : value;
     }
 
     function editableAttrs(key, options = {}) {
-      const className = ["editable-text", options.multiline ? "editable-block" : "", options.className || ""].filter(Boolean).join(" ");
-      const placeholder = options.placeholder || "";
-      const multiline = options.multiline ? " data-edit-multiline=\"true\"" : "";
-      return `class="${className}" contenteditable="plaintext-only" spellcheck="true" tabindex="0" data-edit-key="${escapeHtml(key)}" data-edit-placeholder="${escapeHtml(placeholder)}"${multiline}`;
+      const className = ["locked-text", options.multiline ? "locked-block" : "", options.className || ""].filter(Boolean).join(" ");
+      return `class="${className}"`;
     }
 
     function editableTag(tag, key, fallback, options = {}) {
@@ -1489,18 +1470,12 @@
 
     function setEditableElement(element, key, fallback, options = {}) {
       if (!element) return;
-      element.classList.add("editable-text");
-      if (options.multiline) element.classList.add("editable-block");
-      element.setAttribute("contenteditable", "plaintext-only");
-      element.setAttribute("spellcheck", "true");
-      element.setAttribute("tabindex", "0");
-      element.dataset.editKey = key;
-      element.dataset.editPlaceholder = options.placeholder || "";
-      if (options.multiline) {
-        element.dataset.editMultiline = "true";
-      } else {
-        delete element.dataset.editMultiline;
-      }
+      element.classList.add("locked-text");
+      if (options.multiline) element.classList.add("locked-block");
+      element.removeAttribute("tabindex");
+      delete element.dataset.editKey;
+      delete element.dataset.editPlaceholder;
+      delete element.dataset.editMultiline;
       element.textContent = editableValue(key, fallback);
     }
 
@@ -1514,39 +1489,6 @@
 
     function itemTitle(item) {
       return itemText(item, "title", item.title);
-    }
-
-    function syncEditableInstances(key, value, source) {
-      document.querySelectorAll("[data-edit-key]").forEach((element) => {
-        if (element === source || element.dataset.editKey !== key || element === document.activeElement) return;
-        element.textContent = value;
-      });
-    }
-
-    function shouldRerenderAfterEdit(key) {
-      return key.startsWith("item:")
-        || key.startsWith("category:")
-        || key.startsWith("role:")
-        || key.startsWith("project-category:")
-        || key.startsWith("script-category:")
-        || key.startsWith("list-title:");
-    }
-
-    function saveEditableElement(element) {
-      const key = element.dataset.editKey;
-      if (!key) return;
-      const isMultiline = element.dataset.editMultiline === "true";
-      const value = isMultiline
-        ? element.textContent.trim()
-        : element.textContent.replace(/\s+/g, " ").trim();
-      textEdits[key] = value;
-      saveTextEdits();
-      syncEditableInstances(key, value, element);
-      if (shouldRerenderAfterEdit(key)) {
-        renderTree();
-        renderMobilePicker();
-        renderList();
-      }
     }
 
     function hydratePortfolioCopy() {
@@ -1722,7 +1664,7 @@
         return `<div class="media-placeholder">暂无图片 / Images to add</div>`;
       }
       const id = `carousel-${carouselIndex++}`;
-      const copyCount = images.length === 1 ? 4 : 2;
+      const copyCount = images.length === 1 ? 4 : 3;
       const displayImages = Array.from({ length: copyCount }, () => images).flat();
       return `
         <div class="media-carousel" data-carousel data-copy-count="${copyCount}" id="${id}">
@@ -1746,25 +1688,34 @@
         const shouldReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const copyCount = Number(carousel.dataset.copyCount) || 1;
         const canAutoScroll = copyCount > 1;
-        const speed = 34;
+        const speed = window.matchMedia("(max-width: 767px)").matches ? 22 : 34;
         let raf = null;
         let lastTime = null;
         let isPaused = shouldReduceMotion || !canAutoScroll;
         let isDragging = false;
         let didDrag = false;
         let dragStartX = 0;
-        let dragStartScroll = 0;
+        let dragStartY = 0;
+        let dragStartOffset = 0;
+        let offset = 0;
         let resumeTimer = null;
 
         function loopWidth() {
           return track.scrollWidth / copyCount;
         }
 
-        function normalizeScroll() {
+        function applyOffset() {
+          track.style.setProperty("--carousel-offset", `${offset}px`);
+        }
+
+        function normalizeOffset() {
           const width = loopWidth();
           if (!width || !canAutoScroll) return;
-          if (viewport.scrollLeft >= width) {
-            viewport.scrollLeft -= width;
+          while (offset <= -width) {
+            offset += width;
+          }
+          while (offset > 0) {
+            offset -= width;
           }
         }
 
@@ -1788,37 +1739,46 @@
           const delta = Math.min((now - lastTime) / 1000, 0.08);
           lastTime = now;
           if (!isPaused && !isDragging) {
-            viewport.scrollLeft += speed * delta;
-            normalizeScroll();
+            offset -= speed * delta;
+            normalizeOffset();
+            applyOffset();
           }
           raf = window.requestAnimationFrame(tick);
         }
 
         viewport.addEventListener("pointerdown", (event) => {
+          if (event.button !== undefined && event.button !== 0) return;
           isDragging = true;
           didDrag = false;
           dragStartX = event.clientX;
-          dragStartScroll = viewport.scrollLeft;
+          dragStartY = event.clientY;
+          dragStartOffset = offset;
           viewport.classList.add("is-dragging");
-          viewport.setPointerCapture(event.pointerId);
+          if (viewport.setPointerCapture) {
+            viewport.setPointerCapture(event.pointerId);
+          }
           pauseAuto();
         });
 
         viewport.addEventListener("pointermove", (event) => {
           if (!isDragging) return;
-          event.preventDefault();
-          if (Math.abs(event.clientX - dragStartX) > 4) {
+          const deltaX = event.clientX - dragStartX;
+          const deltaY = event.clientY - dragStartY;
+          if (Math.abs(deltaX) > 4 && Math.abs(deltaX) > Math.abs(deltaY)) {
             didDrag = true;
+            event.preventDefault();
           }
-          viewport.scrollLeft = dragStartScroll - (event.clientX - dragStartX);
-          normalizeScroll();
+          if (!didDrag) return;
+          offset = dragStartOffset + deltaX;
+          normalizeOffset();
+          applyOffset();
         });
 
         function endDrag(event) {
           if (!isDragging) return;
           isDragging = false;
           viewport.classList.remove("is-dragging");
-          if (viewport.hasPointerCapture(event.pointerId)) {
+          if (viewport.hasPointerCapture && viewport.hasPointerCapture(event.pointerId)) {
             viewport.releasePointerCapture(event.pointerId);
           }
           if (didDrag) {
@@ -1829,12 +1789,16 @@
 
         viewport.addEventListener("pointerup", endDrag);
         viewport.addEventListener("pointercancel", endDrag);
-        viewport.addEventListener("wheel", () => {
+        viewport.addEventListener("wheel", (event) => {
+          if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+          offset -= event.deltaX;
+          normalizeOffset();
+          applyOffset();
           pauseAuto();
           resumeAuto(1200);
         }, { passive: true });
-        viewport.addEventListener("scroll", normalizeScroll, { passive: true });
 
+        applyOffset();
         raf = window.requestAnimationFrame(tick);
         carouselCleanups.push(() => {
           window.cancelAnimationFrame(raf);
@@ -1973,23 +1937,7 @@
       renderList();
     }
 
-    document.addEventListener("keydown", (event) => {
-      const editable = event.target.closest("[data-edit-key]");
-      if (!editable) return;
-      if (event.key === "Enter" && editable.dataset.editMultiline !== "true") {
-        event.preventDefault();
-        editable.blur();
-      }
-    });
-
-    document.addEventListener("blur", (event) => {
-      const editable = event.target.closest("[data-edit-key]");
-      if (!editable) return;
-      saveEditableElement(editable);
-    }, true);
-
     tree.addEventListener("click", (event) => {
-      if (event.target.closest("[data-edit-key]")) return;
       const toggle = event.target.closest("[data-toggle]");
       const child = event.target.closest("[data-kind]");
 
@@ -2014,7 +1962,6 @@
     });
 
     tree.addEventListener("keydown", (event) => {
-      if (event.target.closest("[data-edit-key]")) return;
       if (event.key !== "Enter" && event.key !== " ") return;
       const control = event.target.closest("[data-toggle], [data-kind]");
       if (!control) return;
@@ -2023,7 +1970,6 @@
     });
 
     fileList.addEventListener("click", (event) => {
-      if (event.target.closest("[data-edit-key]")) return;
       const item = event.target.closest("[data-id]");
       if (!item) return;
       state.selectedId = item.dataset.id;
@@ -2035,7 +1981,6 @@
     });
 
     fileList.addEventListener("keydown", (event) => {
-      if (event.target.closest("[data-edit-key]")) return;
       if (event.key !== "Enter" && event.key !== " ") return;
       const item = event.target.closest("[data-id]");
       if (!item) return;

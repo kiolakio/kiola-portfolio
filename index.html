@@ -1,0 +1,2139 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kiola Zhan Portfolio</title>
+  <style>
+    :root {
+      --bg: #f5f4ed;
+      --surface: #faf9f5;
+      --surface-warm: #e8e6dc;
+      --fg: #141413;
+      --fg-2: #3d3d3a;
+      --muted: #5e5d59;
+      --meta: #87867f;
+      --border: #f0eee6;
+      --border-soft: #e8e6dc;
+      --accent: #c96442;
+      --accent-on: #faf9f5;
+      --accent-hover: color-mix(in oklab, var(--accent), black 8%);
+      --accent-active: color-mix(in oklab, var(--accent), black 14%);
+      --success: #17a34a;
+      --warn: #eab308;
+      --danger: #b53333;
+      --font-display: "Anthropic Serif", Georgia, "Times New Roman", serif;
+      --font-body: "Anthropic Sans", "Arial", system-ui, -apple-system, sans-serif;
+      --font-mono: "Anthropic Mono", ui-monospace, "JetBrains Mono", Menlo, monospace;
+      --text-xs: 10px;
+      --text-sm: 14px;
+      --text-base: 16px;
+      --text-lg: 20px;
+      --text-xl: 25px;
+      --text-2xl: 32px;
+      --text-3xl: 52px;
+      --text-4xl: 64px;
+      --leading-body: 1.6;
+      --leading-tight: 1.1;
+      --tracking-display: 0em;
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-12: 48px;
+      --section-y-desktop: 96px;
+      --section-y-tablet: 64px;
+      --section-y-phone: 48px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-pill: 9999px;
+      --elev-flat: none;
+      --elev-ring: 0 0 0 1px var(--border);
+      --elev-raised: rgba(0, 0, 0, 0.05) 0px 4px 24px;
+      --focus-ring: 0 0 0 3px rgba(56, 152, 236, 0.3);
+      --motion-fast: 150ms;
+      --motion-base: 200ms;
+      --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+      --container-max: 1200px;
+      --container-gutter-desktop: 24px;
+      --container-gutter-tablet: 16px;
+      --container-gutter-phone: 12px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-body);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body.sidebar-open {
+      overflow: hidden;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--accent);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      margin: 0;
+      color: var(--fg);
+      font-family: var(--font-display);
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: var(--leading-tight);
+      text-wrap: balance;
+    }
+
+    h1 {
+      font-size: var(--text-4xl);
+    }
+
+    h2 {
+      font-size: var(--text-3xl);
+    }
+
+    h3 {
+      font-size: var(--text-xl);
+      line-height: 1.2;
+    }
+
+    p {
+      margin: 0;
+      text-wrap: pretty;
+    }
+
+    .container {
+      width: min(100%, var(--container-max));
+      margin-inline: auto;
+      padding-inline: var(--container-gutter-desktop);
+    }
+
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: color-mix(in oklab, var(--bg), transparent 8%);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+    }
+
+    .topnav-inner {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-5);
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .topnav nav {
+      display: flex;
+      align-items: center;
+      gap: var(--space-6);
+      color: var(--muted);
+      font-size: var(--text-sm);
+    }
+
+    .btn {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-4);
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: var(--fg);
+      line-height: 1;
+      transition: transform var(--motion-fast) var(--ease-standard), background var(--motion-fast) var(--ease-standard), box-shadow var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:focus-visible,
+    .input:focus-visible,
+    .select:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--accent-on);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      color: var(--accent-on);
+    }
+
+    .btn-secondary {
+      background: var(--surface-warm);
+      color: var(--fg-2);
+      box-shadow: 0 0 0 1px var(--border-soft);
+    }
+
+    .btn-ghost {
+      color: var(--muted);
+      border-color: var(--border);
+      background: color-mix(in oklab, var(--surface), transparent 20%);
+    }
+
+    .section {
+      padding-block: var(--section-y-desktop);
+      border-top: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      margin: 0 0 var(--space-4);
+      color: var(--accent);
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      letter-spacing: 0;
+      line-height: 1.6;
+      text-transform: uppercase;
+    }
+
+    .lead {
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: var(--text-lg);
+      line-height: var(--leading-body);
+    }
+
+    .meta {
+      color: var(--meta);
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      line-height: 1.4;
+    }
+
+    .hero {
+      min-height: calc(100svh - 64px);
+      display: grid;
+      place-items: center;
+      padding-block: var(--section-y-tablet);
+      border-top: 0;
+    }
+
+    .hero-center {
+      max-width: 860px;
+      margin-inline: auto;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin-bottom: var(--space-5);
+    }
+
+    .hero .lead {
+      margin: 0 auto var(--space-8);
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--space-3);
+    }
+
+    .scroll-cue {
+      position: absolute;
+      left: 50%;
+      bottom: var(--space-8);
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-pill);
+      background: var(--surface);
+      color: var(--muted);
+      box-shadow: var(--elev-ring);
+      transform: translateX(-50%);
+      animation: cueFloat 1800ms var(--ease-standard) infinite;
+    }
+
+    .scroll-cue:hover {
+      color: var(--accent);
+    }
+
+    @keyframes cueFloat {
+      0%, 100% {
+        transform: translate(-50%, 0);
+      }
+      50% {
+        transform: translate(-50%, 6px);
+      }
+    }
+
+    .education-grid {
+      display: grid;
+      grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr);
+      gap: var(--space-12);
+      align-items: start;
+    }
+
+    .edu-list {
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    .edu-card,
+    .preview-card,
+    .list-pane,
+    .sidebar,
+    .portfolio-head {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--elev-ring);
+    }
+
+    .edu-card {
+      padding: var(--space-6);
+    }
+
+    .edu-card h3 {
+      margin-bottom: var(--space-2);
+    }
+
+    .edu-card p {
+      color: var(--muted);
+    }
+
+    .portfolio-section {
+      padding-top: var(--section-y-tablet);
+    }
+
+    .portfolio-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 560px);
+      gap: var(--space-6);
+      align-items: end;
+      padding: var(--space-6);
+      margin-bottom: var(--space-5);
+    }
+
+    .portfolio-head h2 {
+      margin-bottom: var(--space-3);
+    }
+
+    .input-wrap {
+      width: 100%;
+      justify-self: end;
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .input,
+    .select {
+      width: 100%;
+      min-height: 44px;
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      color: var(--fg);
+    }
+
+    .editable-text {
+      border-radius: var(--radius-sm);
+      outline: none;
+      cursor: text;
+      transition: background var(--motion-fast) var(--ease-standard), box-shadow var(--motion-fast) var(--ease-standard);
+    }
+
+    .editable-text:hover {
+      background: color-mix(in oklab, var(--surface-warm), transparent 42%);
+      box-shadow: 0 0 0 1px var(--border-soft);
+    }
+
+    .editable-text:focus {
+      background: var(--surface);
+      box-shadow: var(--focus-ring);
+    }
+
+    .editable-block {
+      display: block;
+      white-space: pre-wrap;
+    }
+
+    [contenteditable="plaintext-only"]:empty::before {
+      content: attr(data-edit-placeholder);
+      color: var(--meta);
+    }
+
+    .mobile-picker {
+      display: none;
+      margin-bottom: var(--space-4);
+    }
+
+    .portfolio-shell {
+      display: grid;
+      grid-template-columns: minmax(230px, 260px) minmax(280px, 0.82fr) minmax(380px, 1.18fr);
+      gap: var(--space-4);
+      align-items: start;
+      transition: grid-template-columns var(--motion-base) var(--ease-standard);
+    }
+
+    .portfolio-shell.sidebar-collapsed {
+      grid-template-columns: 64px minmax(320px, 0.86fr) minmax(420px, 1.14fr);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 84px;
+      max-height: calc(100svh - 108px);
+      overflow: hidden auto;
+      padding: var(--space-3);
+      transition: width var(--motion-base) var(--ease-standard), transform var(--motion-base) var(--ease-standard);
+    }
+
+    .sidebar-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2);
+      margin-bottom: var(--space-2);
+    }
+
+    .collapse-btn,
+    .category-btn,
+    .subcat-btn,
+    .file-item,
+    .player-btn {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+    }
+
+    .collapse-btn {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: var(--radius-md);
+      color: var(--muted);
+    }
+
+    .collapse-btn:hover {
+      background: var(--surface-warm);
+      color: var(--fg);
+    }
+
+    .sidebar-title {
+      color: var(--muted);
+      font-size: var(--text-sm);
+    }
+
+    .portfolio-shell.sidebar-collapsed .sidebar-title,
+    .portfolio-shell.sidebar-collapsed .category-label,
+    .portfolio-shell.sidebar-collapsed .subcat-list {
+      display: none;
+    }
+
+    .category-group + .category-group {
+      margin-top: var(--space-2);
+    }
+
+    .category-btn {
+      width: 100%;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-md);
+      color: var(--fg);
+      cursor: pointer;
+      transition: background var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard);
+    }
+
+    .category-btn:hover,
+    .category-btn.is-active {
+      background: var(--surface-warm);
+    }
+
+    .category-main {
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    .category-main strong {
+      font-family: var(--font-display);
+      font-weight: 500;
+      line-height: 1.1;
+    }
+
+    .category-main span {
+      color: var(--meta);
+      font-size: var(--text-sm);
+    }
+
+    .subcat-list {
+      display: grid;
+      gap: var(--space-1);
+      margin: var(--space-1) 0 var(--space-2);
+      padding-left: var(--space-3);
+      border-left: 1px solid var(--border);
+    }
+
+    .subcat-list[hidden] {
+      display: none;
+    }
+
+    .subcat-btn {
+      width: 100%;
+      min-height: 36px;
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-sm);
+      color: var(--muted);
+      cursor: pointer;
+      font-size: var(--text-sm);
+    }
+
+    .subcat-btn:hover,
+    .subcat-btn.is-active {
+      background: color-mix(in oklab, var(--accent), transparent 88%);
+      color: var(--fg);
+    }
+
+    .list-pane {
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .list-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding: var(--space-5) var(--space-5) var(--space-3);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .list-head h3 {
+      font-size: var(--text-xl);
+    }
+
+    .count-badge {
+      flex: 0 0 auto;
+      padding: var(--space-1) var(--space-3);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-pill);
+      background: var(--surface-warm);
+      color: var(--fg-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      line-height: 1.4;
+    }
+
+    .file-list {
+      display: grid;
+      gap: var(--space-2);
+      padding: var(--space-3);
+      transition: opacity var(--motion-fast) var(--ease-standard), transform var(--motion-fast) var(--ease-standard);
+    }
+
+    .file-list.is-switching {
+      opacity: 0.35;
+      transform: translateY(4px);
+    }
+
+    .file-item {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: var(--space-3);
+      align-items: center;
+      padding: var(--space-2);
+      border-radius: var(--radius-md);
+      color: var(--fg);
+      cursor: pointer;
+      transition: transform var(--motion-fast) var(--ease-standard), background var(--motion-fast) var(--ease-standard), box-shadow var(--motion-fast) var(--ease-standard);
+    }
+
+    .file-item.no-thumb {
+      grid-template-columns: minmax(0, 1fr);
+      padding: var(--space-3);
+    }
+
+    .file-item:hover {
+      background: var(--surface-warm);
+      box-shadow: var(--elev-raised);
+      transform: scale(1.01);
+    }
+
+    .file-item.is-selected {
+      background: color-mix(in oklab, var(--accent), transparent 90%);
+      box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent), transparent 65%);
+    }
+
+    .thumb {
+      width: 72px;
+      aspect-ratio: 16 / 10;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-sm);
+      background: var(--surface-warm);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      overflow: hidden;
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      opacity: 0;
+      animation: mediaFade var(--motion-base) var(--ease-standard) forwards;
+    }
+
+    .file-copy {
+      min-width: 0;
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    .file-copy strong {
+      display: block;
+      overflow: hidden;
+      color: var(--fg);
+      font-size: var(--text-base);
+      font-weight: 500;
+      line-height: 1.25;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .preview-card {
+      min-width: 0;
+      position: sticky;
+      top: 84px;
+      padding: var(--space-6);
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+      transform-style: preserve-3d;
+      transition: transform var(--motion-fast) var(--ease-standard), box-shadow var(--motion-base) var(--ease-standard);
+    }
+
+    .preview-card.is-glowing {
+      box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent), transparent 70%), 0 20px 64px color-mix(in oklab, var(--accent), transparent 82%);
+    }
+
+    .preview-top {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+
+    .preview-top h3 {
+      font-size: var(--text-2xl);
+    }
+
+    .media-frame {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      background: var(--fg);
+      color: var(--surface);
+      box-shadow: var(--elev-raised);
+    }
+
+    .video-stage {
+      aspect-ratio: 16 / 9;
+      display: grid;
+      place-items: center;
+      padding: var(--space-8);
+      text-align: center;
+      background: color-mix(in oklab, var(--fg), var(--fg-2) 35%);
+    }
+
+    .video-stage strong {
+      display: block;
+      margin-bottom: var(--space-2);
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 500;
+    }
+
+    .video-stage span {
+      color: color-mix(in oklab, var(--surface), transparent 24%);
+      font-size: var(--text-sm);
+    }
+
+    .film-video,
+    .film-embed {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: block;
+      background: var(--fg);
+    }
+
+    .film-embed {
+      border: 0;
+    }
+
+    .player-controls {
+      display: grid;
+      grid-template-columns: auto minmax(90px, 1fr) auto minmax(72px, 110px) auto;
+      gap: var(--space-3);
+      align-items: center;
+      padding: var(--space-3);
+      border-top: 1px solid color-mix(in oklab, var(--surface), transparent 86%);
+      background: color-mix(in oklab, var(--fg), var(--surface) 4%);
+    }
+
+    .player-btn {
+      min-width: 44px;
+      min-height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius-md);
+      background: color-mix(in oklab, var(--surface), transparent 88%);
+      color: var(--surface);
+    }
+
+    .player-btn:hover {
+      background: color-mix(in oklab, var(--surface), transparent 78%);
+    }
+
+    .range {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .detail-block {
+      margin-top: var(--space-5);
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    .detail-block h4 {
+      margin-bottom: var(--space-2);
+      font-size: var(--text-xl);
+    }
+
+    .detail-block p,
+    .detail-block li {
+      color: var(--muted);
+    }
+
+    .still-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-3);
+    }
+
+    .media-placeholder {
+      min-height: 96px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      background: var(--surface-warm);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      text-align: center;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: mediaFade var(--motion-base) var(--ease-standard) forwards;
+    }
+
+    .media-placeholder:nth-child(2) {
+      animation-delay: 80ms;
+    }
+
+    .media-placeholder:nth-child(3) {
+      animation-delay: 160ms;
+    }
+
+    .media-carousel {
+      display: block;
+    }
+
+    .carousel-viewport {
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      border-radius: var(--radius-lg);
+      cursor: grab;
+      touch-action: pan-y;
+      container-type: inline-size;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .carousel-viewport::-webkit-scrollbar {
+      display: none;
+    }
+
+    .carousel-viewport.is-dragging {
+      cursor: grabbing;
+      user-select: none;
+    }
+
+    .carousel-track {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(220px, 94cqw);
+      gap: 2px;
+      padding: 0;
+    }
+
+    .carousel-slide {
+      min-width: 0;
+      overflow: hidden;
+      border: 0;
+      border-radius: var(--radius-sm);
+      background: var(--surface-warm);
+      opacity: 0;
+      transform: translateY(8px);
+      animation: mediaFade var(--motion-base) var(--ease-standard) forwards;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: block;
+      object-fit: cover;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .openable-image {
+      cursor: zoom-in;
+    }
+
+    .image-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: var(--space-4);
+      padding: var(--space-6);
+      background: color-mix(in oklab, var(--fg), transparent 8%);
+    }
+
+    .image-lightbox[hidden] {
+      display: none;
+    }
+
+    .lightbox-close {
+      min-width: 44px;
+      min-height: 44px;
+      justify-self: end;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-pill);
+      background: var(--surface);
+      color: var(--fg);
+      box-shadow: var(--elev-raised);
+    }
+
+    .lightbox-image {
+      max-width: 100%;
+      max-height: calc(100svh - 116px);
+      align-self: center;
+      justify-self: center;
+      border-radius: var(--radius-lg);
+      object-fit: contain;
+      box-shadow: var(--elev-raised);
+    }
+
+    .script-card {
+      display: grid;
+      gap: var(--space-3);
+      padding: var(--space-5);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      background: color-mix(in oklab, var(--surface-warm), transparent 42%);
+    }
+
+    @keyframes mediaFade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .empty-state {
+      padding: var(--space-6);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .contact-strip {
+      padding-block: var(--space-12);
+      background: var(--fg);
+      color: var(--surface);
+    }
+
+    .contact-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .contact-strip h2 {
+      color: var(--surface);
+      font-size: var(--text-2xl);
+    }
+
+    .contact-actions {
+      display: flex;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .contact-actions a {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      padding: var(--space-2) var(--space-4);
+      border: 1px solid color-mix(in oklab, var(--surface), transparent 78%);
+      border-radius: var(--radius-md);
+      color: var(--surface);
+    }
+
+    .contact-actions a:hover {
+      background: color-mix(in oklab, var(--surface), transparent 88%);
+      color: var(--surface);
+    }
+
+    .pagefoot {
+      padding-block: var(--space-6);
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      font-size: var(--text-sm);
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 600ms var(--ease-standard), transform 600ms var(--ease-standard);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1199px) {
+      .portfolio-shell {
+        grid-template-columns: 64px minmax(0, 0.9fr) minmax(320px, 1.1fr);
+      }
+
+      .portfolio-shell:not(.sidebar-open-tablet) .sidebar-title,
+      .portfolio-shell:not(.sidebar-open-tablet) .category-label,
+      .portfolio-shell:not(.sidebar-open-tablet) .subcat-list {
+        display: none;
+      }
+
+      .portfolio-shell.sidebar-open-tablet {
+        grid-template-columns: minmax(230px, 260px) minmax(0, 0.9fr) minmax(320px, 1.1fr);
+      }
+
+      .preview-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 920px) {
+      .container {
+        padding-inline: var(--container-gutter-tablet);
+      }
+
+      .section {
+        padding-block: var(--section-y-tablet);
+      }
+
+      h1 {
+        font-size: var(--text-3xl);
+      }
+
+      h2 {
+        font-size: 40px;
+      }
+
+      .topnav nav {
+        display: none;
+      }
+
+      .education-grid,
+      .portfolio-head {
+        grid-template-columns: 1fr;
+      }
+
+      .portfolio-head {
+        align-items: start;
+      }
+
+      .input-wrap {
+        width: 100%;
+      }
+
+      .portfolio-shell,
+      .portfolio-shell.sidebar-collapsed,
+      .portfolio-shell.sidebar-open-tablet {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .mobile-picker {
+        display: block;
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .container {
+        padding-inline: var(--container-gutter-phone);
+      }
+
+      .section {
+        padding-block: var(--section-y-phone);
+      }
+
+      .hero {
+        min-height: calc(100svh - 64px);
+      }
+
+      h1 {
+        font-size: 38px;
+      }
+
+      h2 {
+        font-size: var(--text-2xl);
+      }
+
+      .lead {
+        font-size: var(--text-base);
+      }
+
+      .topnav-inner {
+        min-height: 58px;
+      }
+
+      .portfolio-shell,
+      .portfolio-shell.sidebar-collapsed,
+      .portfolio-shell.sidebar-open-tablet {
+        grid-template-columns: 1fr;
+      }
+
+      .file-item {
+        grid-template-columns: 64px minmax(0, 1fr);
+      }
+
+      .thumb {
+        width: 64px;
+      }
+
+      .player-controls {
+        grid-template-columns: auto minmax(80px, 1fr) auto;
+      }
+
+      .player-controls .volume,
+      .player-controls .duration {
+        display: none;
+      }
+
+      .still-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-top {
+        display: grid;
+      }
+
+      .contact-inner {
+        display: grid;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topnav" data-od-id="topnav">
+    <div class="container topnav-inner">
+      <a class="logo" href="#about" aria-label="Kiola Zhan portfolio home">Kiola Zhan</a>
+      <nav aria-label="主导航">
+        <a href="#about">About</a>
+        <a href="#education">Education</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="hero" id="about" data-od-id="hero">
+      <div class="container hero-center reveal">
+        <p class="eyebrow"></p>
+        <h1>Kiola Zhan</h1>
+        <p class="lead"></p>
+        
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#portfolio">View Portfolio</a>
+          
+        </div>
+      </div>
+      <button class="scroll-cue" type="button" aria-label="向下浏览" id="scrollCue">↓</button>
+    </section>
+
+    <section class="section" id="education" data-od-id="education">
+      <div class="container education-grid reveal">
+        <div>
+          <p class="eyebrow">Education</p>
+          <h2>教育经历</h2>
+          
+        </div>
+        <div class="edu-list">
+          <article class="edu-card">
+            <h3>北京电影学院 · 硕士</h3>
+            <p>智能影像工程学院 · 数字电影制作/未来电影工业化智能创新应用实验室/AI 影像创作与研究优培实验班</p>
+            
+          </article>
+          <article class="edu-card">
+            <h3>西南大学 · 本科</h3>
+            <p>新闻传媒学院 · 广播电视编导/新闻学</p>
+          </article>
+          
+        </div>
+      </div>
+    </section>
+
+    <section class="section portfolio-section" id="portfolio" data-od-id="portfolio">
+      <div class="container">
+        <div class="portfolio-head reveal">
+          <div>
+            <p class="eyebrow">Portfolio</p>
+            <h2>作品集</h2>
+            
+          </div>
+          <label class="input-wrap">
+            
+            <input class="input" id="searchInput" type="search" placeholder="输入作品名称、类型或职责" autocomplete="off">
+          </label>
+        </div>
+
+        <div class="portfolio-shell reveal" id="portfolioShell">
+          <aside class="sidebar" aria-label="作品分类">
+            <div class="sidebar-head">
+              <span class="sidebar-title">Categories</span>
+              <button class="collapse-btn" type="button" id="collapseBtn" aria-label="收起或展开侧边栏">☰</button>
+            </div>
+            <nav id="categoryTree" aria-label="作品分类导航"></nav>
+          </aside>
+
+          <label class="mobile-picker">
+            <span class="meta">移动端分类 / Mobile category</span>
+            <select class="select" id="mobileCategory"></select>
+          </label>
+
+          <section class="list-pane" data-od-id="portfolio-list" aria-label="文件列表">
+            <div class="list-head">
+              <div>
+                <h3 id="listTitle">Short</h3>
+              </div>
+              <span class="count-badge" id="countBadge">0 项</span>
+            </div>
+            <div class="file-list" id="fileList"></div>
+          </section>
+
+	          <article class="preview-card" id="previewCard" aria-live="polite">
+	            <div class="preview-top">
+	              <div>
+	                <h3 id="previewTitle">短片 01（待替换片名）</h3>
+	              </div>
+	            </div>
+            <div id="previewBody"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-strip" id="contact" data-od-id="contact">
+      <div class="container contact-inner reveal">
+        <div>
+          <p class="eyebrow" style="color: var(--surface);">Contact</p>
+          <h2>联系 Kiola Zhan</h2>
+          
+        </div>
+        <div class="contact-actions">
+          <a href="mailto:zhlkiola@163.com">zhlkiola@163.com</a>
+          <a href="tel:15068774416">15068774416</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pagefoot" data-od-id="footer">
+    <div class="container footer-row">
+      <span>© Kiola Zhan Portfolio</span>
+      <span class="meta">Short · Project · Script</span>
+    </div>
+  </footer>
+
+  <div class="image-lightbox" id="imageLightbox" role="dialog" aria-modal="true" aria-label="全屏图片查看" hidden="">
+    <button class="lightbox-close" id="lightboxClose" type="button" aria-label="关闭全屏图片">关闭</button>
+    <img class="lightbox-image" id="lightboxImage" alt="">
+  </div>
+
+  <script src="assets/portfolio-manifest.js"></script>
+  <script>
+    const manifest = window.PORTFOLIO_MANIFEST || {
+      roles: [],
+      projectCategories: [],
+      scriptCategories: [],
+      shorts: [],
+      projects: [],
+      scripts: []
+    };
+
+    const roleLabels = Object.fromEntries(manifest.roles.map((role) => [role.id, role]));
+    const projectLabels = Object.fromEntries(manifest.projectCategories.map((category) => [category.id, category]));
+    const scriptLabels = Object.fromEntries(manifest.scriptCategories.map((category) => [category.id, category]));
+    const films = manifest.shorts;
+    const projects = manifest.projects;
+    const scripts = manifest.scripts;
+    const defaultRole = manifest.roles[0] ? manifest.roles[0].id : "";
+    const defaultSelected = films.find((item) => item.category === defaultRole) || films[0] || projects[0] || scripts[0];
+
+    const state = {
+      expanded: new Set(["short", "project", "script"]),
+      view: { kind: "short", category: defaultRole },
+      selectedId: defaultSelected ? defaultSelected.id : "",
+      query: ""
+    };
+
+    const shell = document.querySelector("#portfolioShell");
+    const tree = document.querySelector("#categoryTree");
+    const mobileCategory = document.querySelector("#mobileCategory");
+    const searchInput = document.querySelector("#searchInput");
+    const fileList = document.querySelector("#fileList");
+    const listTitle = document.querySelector("#listTitle");
+    const countBadge = document.querySelector("#countBadge");
+    const previewCard = document.querySelector("#previewCard");
+    const previewTitle = document.querySelector("#previewTitle");
+    const previewBody = document.querySelector("#previewBody");
+    const imageLightbox = document.querySelector("#imageLightbox");
+    const lightboxImage = document.querySelector("#lightboxImage");
+    const lightboxClose = document.querySelector("#lightboxClose");
+    const editableStoreKey = "kiola-portfolio-inline-edits-v1";
+    let textEdits = loadTextEdits();
+    const titleReplacements = new Map(
+      [...films, ...projects, ...scripts].flatMap((item) => {
+        return [item.titleEn, item.titleZh, item.previousTitle]
+          .filter((value) => value && value !== item.title)
+          .map((value) => [value, item.title]);
+      })
+    );
+    const previewHeadingReplacements = new Map([
+      ["preview-heading:film-role", "Role"],
+      ["preview-heading:film-note", "Introduction"],
+      ["preview-heading:film-synopsis", "Concept"],
+      ["preview-heading:script-concept", "Concept"],
+      ["preview-heading:script-synopsis", "Synopsis"],
+      ["preview-heading:project-role", "Role"],
+      ["preview-heading:project-note", "Introduction"]
+    ]);
+    const oldPreviewHeadingValues = new Set([
+      "职责 / Role",
+      "短片介绍 / Film note",
+      "Film note",
+      "创意 / Concept",
+      "梗概 / Synopsis",
+      "项目介绍 / Project note",
+      "Project note"
+    ]);
+    const oldScriptConceptPlaceholder = "创意待补充。这里保留为文字卡，不使用图片封面。";
+    const oldScriptSynopsisPlaceholder = "梗概待补充。建议后续填入一句核心命题、主要冲突、人物关系与结尾走向。";
+    const oldFilmNotePlaceholder = "简介待补充。当前页面已接入该作品目录中的标题图、静帧与视频引用；后续可在清单中补充片长、年份、拍摄格式、节展经历与个人职责说明。";
+    const oldFilmConceptPlaceholder = "Concept to be added.";
+    const oldRoleCopyValues = new Set(
+      manifest.roles.flatMap((role) => [role.label, role.zh, `${role.zh || ""} / ${role.label || ""}`].filter(Boolean))
+    );
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function loadTextEdits() {
+      try {
+        return JSON.parse(window.localStorage.getItem(editableStoreKey) || "{}");
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function saveTextEdits() {
+      try {
+        window.localStorage.setItem(editableStoreKey, JSON.stringify(textEdits));
+      } catch (error) {
+        // Local storage can be unavailable in restricted previews; editing still works for the session.
+      }
+    }
+
+    function normalizeTitleValue(value) {
+      const title = String(value || "");
+      return titleReplacements.get(title) || title;
+    }
+
+    function migrateTitleEdits() {
+      let changed = false;
+      Object.keys(textEdits).forEach((key) => {
+        if (!key.startsWith("item:") || !key.endsWith(":title")) return;
+        const normalized = normalizeTitleValue(textEdits[key]);
+        if (normalized !== textEdits[key]) {
+          textEdits[key] = normalized;
+          changed = true;
+        }
+      });
+      if (changed) saveTextEdits();
+    }
+
+    function migratePreviewCopyEdits() {
+      let changed = false;
+      const shortCopyRefreshKey = "migration:short-copy-2026-06-11-wanchun";
+      if (textEdits[shortCopyRefreshKey] !== "done") {
+        const refreshedFilmTitles = new Set(["晚春", "春江雾", "我需要一个导演", "等到琴声响起时"]);
+        films.forEach((item) => {
+          if (!refreshedFilmTitles.has(item.title)) return;
+          [itemKey(item, "filmNote")].forEach((key) => {
+            if (Object.prototype.hasOwnProperty.call(textEdits, key)) {
+              delete textEdits[key];
+              changed = true;
+            }
+          });
+          if (item.title === "晚春") {
+            [itemKey(item, "roleLine"), itemKey(item, "filmSynopsis")].forEach((key) => {
+              if (Object.prototype.hasOwnProperty.call(textEdits, key)) {
+                delete textEdits[key];
+                changed = true;
+              }
+            });
+          }
+        });
+        textEdits[shortCopyRefreshKey] = "done";
+        changed = true;
+      }
+      const qinIntroRefreshKey = "migration:qin-introduction-2026-06-11";
+      if (textEdits[qinIntroRefreshKey] !== "done") {
+        films.forEach((item) => {
+          if (item.title !== "等到琴声响起时") return;
+          const noteKey = itemKey(item, "filmNote");
+          if (Object.prototype.hasOwnProperty.call(textEdits, noteKey)) {
+            delete textEdits[noteKey];
+            changed = true;
+          }
+        });
+        textEdits[qinIntroRefreshKey] = "done";
+        changed = true;
+      }
+      if (textEdits["preview-heading:film-synopsis"] === "Synopsis") {
+        textEdits["preview-heading:film-synopsis"] = "Concept";
+        changed = true;
+      }
+      previewHeadingReplacements.forEach((replacement, key) => {
+        const value = textEdits[key] || "";
+        if (!value || oldPreviewHeadingValues.has(value)) {
+          textEdits[key] = replacement;
+          changed = true;
+        }
+      });
+      films.forEach((item) => {
+        const roleKey = itemKey(item, "roleLine");
+        const roleValue = textEdits[roleKey] || "";
+        if (roleValue && item.role && oldRoleCopyValues.has(roleValue)) {
+          delete textEdits[roleKey];
+          changed = true;
+        }
+        const noteKey = itemKey(item, "filmNote");
+        if (textEdits[noteKey] === oldFilmNotePlaceholder && item.introduction) {
+          delete textEdits[noteKey];
+          changed = true;
+        }
+        const conceptKey = itemKey(item, "filmSynopsis");
+        if ((textEdits[conceptKey] === oldFilmConceptPlaceholder || textEdits[conceptKey] === "Synopsis to be added.") && item.concept) {
+          delete textEdits[conceptKey];
+          changed = true;
+        }
+      });
+      scripts.forEach((item) => {
+        const conceptKey = itemKey(item, "concept");
+        const synopsisKey = itemKey(item, "synopsis");
+        if (textEdits[conceptKey] === oldScriptConceptPlaceholder && item.concept) {
+          delete textEdits[conceptKey];
+          changed = true;
+        }
+        if (textEdits[synopsisKey] === oldScriptSynopsisPlaceholder && item.synopsis) {
+          delete textEdits[synopsisKey];
+          changed = true;
+        }
+      });
+      projects.forEach((item) => {
+        const roleKey = itemKey(item, "projectRole");
+        if (textEdits[roleKey] === "Role to be added." && item.role) {
+          delete textEdits[roleKey];
+          changed = true;
+        }
+        const noteKey = itemKey(item, "projectNote");
+        const oldProjectNote = "项目介绍待补充。当前已接入项目目录中的 BTS / 过程图片，HEIC 文件已生成网页用 PNG 缩略图副本；后续可补充研究目标、方法、个人职责与阶段成果。";
+        if ((textEdits[noteKey] === oldProjectNote || textEdits[noteKey] === "项目介绍待补充") && item.introduction) {
+          delete textEdits[noteKey];
+          changed = true;
+        }
+      });
+      if (changed) saveTextEdits();
+    }
+
+    function hasTextEdit(key) {
+      return Object.prototype.hasOwnProperty.call(textEdits, key);
+    }
+
+    function editableValue(key, fallback) {
+      const value = hasTextEdit(key) ? textEdits[key] : String(fallback || "");
+      return key.startsWith("item:") && key.endsWith(":title") ? normalizeTitleValue(value) : value;
+    }
+
+    function editableAttrs(key, options = {}) {
+      const className = ["editable-text", options.multiline ? "editable-block" : "", options.className || ""].filter(Boolean).join(" ");
+      const placeholder = options.placeholder || "";
+      const multiline = options.multiline ? " data-edit-multiline=\"true\"" : "";
+      return `class="${className}" contenteditable="plaintext-only" spellcheck="true" tabindex="0" data-edit-key="${escapeHtml(key)}" data-edit-placeholder="${escapeHtml(placeholder)}"${multiline}`;
+    }
+
+    function editableTag(tag, key, fallback, options = {}) {
+      return `<${tag} ${editableAttrs(key, options)}>${escapeHtml(editableValue(key, fallback))}</${tag}>`;
+    }
+
+    function setEditableElement(element, key, fallback, options = {}) {
+      if (!element) return;
+      element.classList.add("editable-text");
+      if (options.multiline) element.classList.add("editable-block");
+      element.setAttribute("contenteditable", "plaintext-only");
+      element.setAttribute("spellcheck", "true");
+      element.setAttribute("tabindex", "0");
+      element.dataset.editKey = key;
+      element.dataset.editPlaceholder = options.placeholder || "";
+      if (options.multiline) {
+        element.dataset.editMultiline = "true";
+      } else {
+        delete element.dataset.editMultiline;
+      }
+      element.textContent = editableValue(key, fallback);
+    }
+
+    function itemKey(item, field) {
+      return `item:${item.id}:${field}`;
+    }
+
+    function itemText(item, field, fallback) {
+      return editableValue(itemKey(item, field), fallback);
+    }
+
+    function itemTitle(item) {
+      return itemText(item, "title", item.title);
+    }
+
+    function syncEditableInstances(key, value, source) {
+      document.querySelectorAll("[data-edit-key]").forEach((element) => {
+        if (element === source || element.dataset.editKey !== key || element === document.activeElement) return;
+        element.textContent = value;
+      });
+    }
+
+    function shouldRerenderAfterEdit(key) {
+      return key.startsWith("item:")
+        || key.startsWith("category:")
+        || key.startsWith("role:")
+        || key.startsWith("project-category:")
+        || key.startsWith("script-category:")
+        || key.startsWith("list-title:");
+    }
+
+    function saveEditableElement(element) {
+      const key = element.dataset.editKey;
+      if (!key) return;
+      const isMultiline = element.dataset.editMultiline === "true";
+      const value = isMultiline
+        ? element.textContent.trim()
+        : element.textContent.replace(/\s+/g, " ").trim();
+      textEdits[key] = value;
+      saveTextEdits();
+      syncEditableInstances(key, value, element);
+      if (shouldRerenderAfterEdit(key)) {
+        renderTree();
+        renderMobilePicker();
+        renderList();
+      }
+    }
+
+    function hydratePortfolioCopy() {
+      setEditableElement(document.querySelector("#portfolio .portfolio-head .eyebrow"), "portfolio:eyebrow", "Portfolio");
+      setEditableElement(document.querySelector("#portfolio .portfolio-head h2"), "portfolio:title", "作品集");
+      setEditableElement(document.querySelector(".sidebar-title"), "portfolio:sidebar-title", "Categories");
+      setEditableElement(document.querySelector(".mobile-picker .meta"), "portfolio:mobile-picker-label", "移动端分类 / Mobile category");
+    }
+
+    function getItemById(id) {
+      return [...films, ...projects, ...scripts].find((item) => item.id === id);
+    }
+
+    function getCurrentItems() {
+      if (state.view.kind === "short") {
+        return films.filter((item) => item.category === state.view.category);
+      }
+      if (state.view.kind === "project") {
+        return projects;
+      }
+      if (state.view.kind === "script") {
+        return scripts.filter((item) => item.category === state.view.category);
+      }
+      return [];
+    }
+
+    function labelForView() {
+      if (state.view.kind === "short") {
+        return {
+          title: "Short"
+        };
+      }
+      if (state.view.kind === "project") {
+        return {
+          title: "Project"
+        };
+      }
+      if (state.view.kind === "script") {
+        return {
+          title: "Script"
+        };
+      }
+      return {
+        title: "作品列表"
+      };
+    }
+
+    function matchesQuery(item) {
+      const q = state.query.trim().toLowerCase();
+      if (!q) return true;
+      return [
+        itemTitle(item),
+        item.titleEn,
+        item.titleZh,
+        itemText(item, "roleLine", `${item.roleZh || ""} / ${item.role || ""}`),
+        itemText(item, "concept", item.concept || "创意待补充"),
+        itemText(item, "synopsis", item.synopsis || "梗概待补充"),
+        itemText(item, "filmNote", item.introduction || "简介待补充"),
+        itemText(item, "filmSynopsis", item.concept || "Concept to be added."),
+        itemText(item, "projectNote", item.introduction || "项目介绍待补充"),
+        item.role,
+        item.roleZh,
+        item.genre,
+        item.genreZh,
+        item.kind,
+        item.fileName
+      ].join(" ").toLowerCase().includes(q);
+    }
+
+    function renderTree() {
+      const categories = [
+        { id: "short", cn: "短片", en: "Short" },
+        { id: "project", cn: "项目", en: "Project" },
+        { id: "script", cn: "剧本", en: "Script" }
+      ];
+
+      tree.innerHTML = categories.map((category) => {
+        const isActive = state.view.kind === category.id;
+        const expanded = state.expanded.has(category.id);
+        let children = "";
+        if (category.id === "short") {
+          children = manifest.roles.map((role) => `
+            <div class="subcat-btn ${state.view.kind === "short" && state.view.category === role.id ? "is-active" : ""}" role="button" tabindex="0" data-kind="short" data-category="${role.id}">
+              ${editableTag("span", `role:${role.id}:label`, role.label)}
+            </div>
+          `).join("");
+        }
+        if (category.id === "project") {
+          children = "";
+        }
+        if (category.id === "script") {
+          children = manifest.scriptCategories.map((genre) => `
+            <div class="subcat-btn ${state.view.kind === "script" && state.view.category === genre.id ? "is-active" : ""}" role="button" tabindex="0" data-kind="script" data-category="${genre.id}">
+              ${editableTag("span", `script-category:${genre.id}:label`, genre.label)}
+            </div>
+          `).join("");
+        }
+
+        const hasChildren = children.trim().length > 0;
+        return `
+          <div class="category-group">
+            <div class="category-btn ${isActive ? "is-active" : ""}" role="button" tabindex="0" data-toggle="${category.id}">
+              <span class="category-main category-label">
+                ${editableTag("strong", `category:${category.id}:en`, category.en)}
+              </span>
+              ${hasChildren ? `<span aria-hidden="true">${expanded ? "−" : "+"}</span>` : ""}
+            </div>
+            ${hasChildren ? `<div class="subcat-list" ${expanded ? "" : "hidden"}>${children}</div>` : ""}
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderMobilePicker() {
+      const roleOptions = manifest.roles.map((role) => `<option value="short:${role.id}">Short / ${escapeHtml(editableValue(`role:${role.id}:label`, role.label))}</option>`).join("");
+      const projectOptions = `<option value="project:all">Project</option>`;
+      const scriptOptions = manifest.scriptCategories.map((genre) => `<option value="script:${genre.id}">Script / ${escapeHtml(editableValue(`script-category:${genre.id}:label`, genre.label))}</option>`).join("");
+      mobileCategory.innerHTML = `
+        ${roleOptions}
+        ${projectOptions}
+        ${scriptOptions}
+      `;
+      mobileCategory.value = `${state.view.kind}:${state.view.category}`;
+    }
+
+    function renderList() {
+      const visible = getCurrentItems().filter(matchesQuery);
+      const labels = labelForView();
+      setEditableElement(listTitle, `list-title:${state.view.kind}`, labels.title);
+      countBadge.textContent = `${visible.length} 项`;
+
+      fileList.classList.add("is-switching");
+      window.setTimeout(() => fileList.classList.remove("is-switching"), 160);
+
+      if (!visible.some((item) => item.id === state.selectedId)) {
+        state.selectedId = visible[0] ? visible[0].id : "";
+      }
+
+      if (!visible.length) {
+        fileList.innerHTML = `<div class="empty-state">未找到匹配作品 / No matching work</div>`;
+        renderPreview(null);
+        return;
+      }
+
+      fileList.innerHTML = visible.map((item) => {
+        const thumb = item.kind === "short" && item.thumb
+          ? `<span class="thumb"><img class="openable-image" src="${escapeHtml(item.thumb)}" data-fullscreen-src="${escapeHtml(item.thumb)}" alt="${escapeHtml(itemTitle(item))} thumbnail" loading="lazy"></span>`
+          : "";
+        return `
+          <article class="file-item ${thumb ? "" : "no-thumb"} ${item.id === state.selectedId ? "is-selected" : ""}" role="button" tabindex="0" data-id="${item.id}">
+            ${thumb}
+            <span class="file-copy">
+              ${editableTag("strong", itemKey(item, "title"), itemTitle(item))}
+            </span>
+          </article>
+        `;
+      }).join("");
+
+      renderPreview(getItemById(state.selectedId));
+    }
+
+    let carouselIndex = 0;
+    let carouselCleanups = [];
+    let lastCarouselDragAt = 0;
+
+    function clearCarouselTimers() {
+      carouselCleanups.forEach((cleanup) => cleanup());
+      carouselCleanups = [];
+    }
+
+    function renderCarousel(images, heading, ariaLabel) {
+      if (!images || !images.length) {
+        return `<div class="media-placeholder">暂无图片 / Images to add</div>`;
+      }
+      const id = `carousel-${carouselIndex++}`;
+      const copyCount = images.length === 1 ? 4 : 2;
+      const displayImages = Array.from({ length: copyCount }, () => images).flat();
+      return `
+        <div class="media-carousel" data-carousel data-copy-count="${copyCount}" id="${id}">
+          <div class="carousel-viewport" tabindex="0" aria-label="${escapeHtml(ariaLabel)}">
+            <div class="carousel-track">
+              ${displayImages.map((src, index) => `
+                <figure class="carousel-slide" style="animation-delay: ${Math.min(index * 70, 420)}ms">
+                  <img class="openable-image" src="${escapeHtml(src)}" data-fullscreen-src="${escapeHtml(src)}" alt="${escapeHtml(ariaLabel)} ${(index % images.length) + 1}" loading="lazy" draggable="false">
+                </figure>
+              `).join("")}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function bindCarousels() {
+      document.querySelectorAll("[data-carousel]").forEach((carousel) => {
+        const viewport = carousel.querySelector(".carousel-viewport");
+        const track = carousel.querySelector(".carousel-track");
+        const shouldReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const copyCount = Number(carousel.dataset.copyCount) || 1;
+        const canAutoScroll = copyCount > 1;
+        const speed = 34;
+        let raf = null;
+        let lastTime = null;
+        let isPaused = shouldReduceMotion || !canAutoScroll;
+        let isDragging = false;
+        let didDrag = false;
+        let dragStartX = 0;
+        let dragStartScroll = 0;
+        let resumeTimer = null;
+
+        function loopWidth() {
+          return track.scrollWidth / copyCount;
+        }
+
+        function normalizeScroll() {
+          const width = loopWidth();
+          if (!width || !canAutoScroll) return;
+          if (viewport.scrollLeft >= width) {
+            viewport.scrollLeft -= width;
+          }
+        }
+
+        function pauseAuto() {
+          if (shouldReduceMotion || !canAutoScroll) return;
+          isPaused = true;
+          window.clearTimeout(resumeTimer);
+        }
+
+        function resumeAuto(delay = 900) {
+          if (shouldReduceMotion || !canAutoScroll) return;
+          window.clearTimeout(resumeTimer);
+          resumeTimer = window.setTimeout(() => {
+            lastTime = null;
+            isPaused = false;
+          }, delay);
+        }
+
+        function tick(now) {
+          if (lastTime === null) lastTime = now;
+          const delta = Math.min((now - lastTime) / 1000, 0.08);
+          lastTime = now;
+          if (!isPaused && !isDragging) {
+            viewport.scrollLeft += speed * delta;
+            normalizeScroll();
+          }
+          raf = window.requestAnimationFrame(tick);
+        }
+
+        viewport.addEventListener("pointerdown", (event) => {
+          isDragging = true;
+          didDrag = false;
+          dragStartX = event.clientX;
+          dragStartScroll = viewport.scrollLeft;
+          viewport.classList.add("is-dragging");
+          viewport.setPointerCapture(event.pointerId);
+          pauseAuto();
+        });
+
+        viewport.addEventListener("pointermove", (event) => {
+          if (!isDragging) return;
+          event.preventDefault();
+          if (Math.abs(event.clientX - dragStartX) > 4) {
+            didDrag = true;
+          }
+          viewport.scrollLeft = dragStartScroll - (event.clientX - dragStartX);
+          normalizeScroll();
+        });
+
+        function endDrag(event) {
+          if (!isDragging) return;
+          isDragging = false;
+          viewport.classList.remove("is-dragging");
+          if (viewport.hasPointerCapture(event.pointerId)) {
+            viewport.releasePointerCapture(event.pointerId);
+          }
+          if (didDrag) {
+            lastCarouselDragAt = Date.now();
+          }
+          resumeAuto();
+        }
+
+        viewport.addEventListener("pointerup", endDrag);
+        viewport.addEventListener("pointercancel", endDrag);
+        viewport.addEventListener("wheel", () => {
+          pauseAuto();
+          resumeAuto(1200);
+        }, { passive: true });
+        viewport.addEventListener("scroll", normalizeScroll, { passive: true });
+
+        raf = window.requestAnimationFrame(tick);
+        carouselCleanups.push(() => {
+          window.cancelAnimationFrame(raf);
+          window.clearTimeout(resumeTimer);
+        });
+      });
+    }
+
+    function hideImageLightbox() {
+      if (!imageLightbox) return;
+      imageLightbox.hidden = true;
+      lightboxImage.removeAttribute("src");
+      lightboxImage.alt = "";
+    }
+
+    function closeImageLightbox() {
+      if (!imageLightbox || imageLightbox.hidden) return;
+      if (document.fullscreenElement === imageLightbox && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {}).finally(hideImageLightbox);
+        return;
+      }
+      hideImageLightbox();
+    }
+
+    function openImageLightbox(image) {
+      if (!imageLightbox || !image) return;
+      const src = image.dataset.fullscreenSrc || image.currentSrc || image.src;
+      if (!src) return;
+      lightboxImage.src = src;
+      lightboxImage.alt = image.alt || "Portfolio image";
+      imageLightbox.hidden = false;
+      if (imageLightbox.requestFullscreen) {
+        imageLightbox.requestFullscreen().catch(() => {});
+      }
+    }
+
+    function renderPreview(item) {
+	      clearCarouselTimers();
+	      if (!item) {
+	        setEditableElement(previewTitle, "empty-preview:title", "暂无内容");
+	        previewBody.innerHTML = `${editableTag("p", "empty-preview:body", "请调整搜索或分类 / Adjust search or category.", { className: "empty-state", multiline: true })}`;
+	        return;
+	      }
+
+      setEditableElement(previewTitle, itemKey(item, "title"), itemTitle(item));
+
+      if (item.kind === "short") {
+        const poster = item.thumb || item.stills[0] || "";
+        const stillsBlock = item.id === "short-cinematography-gaffer-shasisendimensi"
+          ? ""
+          : `<section data-od-id="preview-film-stills">
+              ${renderCarousel(item.stills, "Stills", `${itemTitle(item)} stills`)}
+            </section>`;
+        const videoBlock = item.videoEmbed && item.videoEmbed.src
+          ? `<div class="media-frame" id="mediaFrame">
+            <iframe class="film-embed" src="${escapeHtml(item.videoEmbed.src)}" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" allow="fullscreen; autoplay; encrypted-media; picture-in-picture" title="${escapeHtml(itemTitle(item))}"></iframe>
+          </div>`
+          : item.video
+            ? `<div class="media-frame" id="mediaFrame">
+              <video class="film-video" controls preload="metadata" ${poster ? `poster="${escapeHtml(poster)}"` : ""}>
+                <source src="${escapeHtml(item.video)}" type="video/mp4">
+                当前浏览器无法播放此 MP4 文件。
+              </video>
+            </div>`
+            : "";
+        previewBody.innerHTML = `
+          ${videoBlock}
+          <div class="detail-block">
+            <section data-od-id="preview-film-role">
+              ${editableTag("h4", "preview-heading:film-role", "Role")}
+              ${editableTag("p", itemKey(item, "roleLine"), item.role || "", { multiline: true })}
+            </section>
+            <section data-od-id="preview-film-note">
+              ${editableTag("h4", "preview-heading:film-note", "Introduction")}
+              ${editableTag("p", itemKey(item, "filmNote"), item.introduction || oldFilmNotePlaceholder, { multiline: true })}
+            </section>
+            <section data-od-id="preview-film-synopsis">
+              ${editableTag("h4", "preview-heading:film-synopsis", "Concept")}
+              ${editableTag("p", itemKey(item, "filmSynopsis"), item.concept || oldFilmConceptPlaceholder, { multiline: true })}
+            </section>
+            ${stillsBlock}
+          </div>
+        `;
+        bindCarousels();
+      }
+
+      if (item.kind === "script") {
+        previewBody.innerHTML = `
+          <div class="detail-block">
+            <section class="script-card" data-od-id="preview-script-concept">
+              ${editableTag("h4", "preview-heading:script-concept", "Concept")}
+              ${editableTag("p", itemKey(item, "concept"), item.concept || oldScriptConceptPlaceholder, { multiline: true })}
+            </section>
+            <section class="script-card" data-od-id="preview-script-synopsis">
+              ${editableTag("h4", "preview-heading:script-synopsis", "Synopsis")}
+              ${editableTag("p", itemKey(item, "synopsis"), item.synopsis || oldScriptSynopsisPlaceholder, { multiline: true })}
+            </section>
+          </div>
+        `;
+      }
+
+      if (item.kind === "project") {
+        previewBody.innerHTML = `
+          <div class="detail-block">
+            <section data-od-id="preview-project-role">
+              ${editableTag("h4", "preview-heading:project-role", "Role")}
+              ${editableTag("p", itemKey(item, "projectRole"), item.role || "Role to be added.", { multiline: true })}
+            </section>
+            <section data-od-id="preview-project-note">
+              ${editableTag("h4", "preview-heading:project-note", "Introduction")}
+              ${editableTag("p", itemKey(item, "projectNote"), item.introduction || "项目介绍待补充。", { multiline: true })}
+            </section>
+            <section data-od-id="preview-project-images">
+              ${renderCarousel(item.images, "Project images", `${itemTitle(item)} project images`)}
+            </section>
+          </div>
+        `;
+        bindCarousels();
+      }
+
+      previewCard.classList.remove("is-glowing");
+      requestAnimationFrame(() => previewCard.classList.add("is-glowing"));
+    }
+
+    function firstCategory(kind) {
+      if (kind === "short") return manifest.roles[0] ? manifest.roles[0].id : "";
+      if (kind === "project") return "all";
+      if (kind === "script") return manifest.scriptCategories[0] ? manifest.scriptCategories[0].id : "";
+      return "";
+    }
+
+    function setView(kind, category) {
+      state.view = { kind, category: category || firstCategory(kind) };
+      renderTree();
+      renderMobilePicker();
+      renderList();
+    }
+
+    document.addEventListener("keydown", (event) => {
+      const editable = event.target.closest("[data-edit-key]");
+      if (!editable) return;
+      if (event.key === "Enter" && editable.dataset.editMultiline !== "true") {
+        event.preventDefault();
+        editable.blur();
+      }
+    });
+
+    document.addEventListener("blur", (event) => {
+      const editable = event.target.closest("[data-edit-key]");
+      if (!editable) return;
+      saveEditableElement(editable);
+    }, true);
+
+    tree.addEventListener("click", (event) => {
+      if (event.target.closest("[data-edit-key]")) return;
+      const toggle = event.target.closest("[data-toggle]");
+      const child = event.target.closest("[data-kind]");
+
+      if (toggle) {
+        const kind = toggle.dataset.toggle;
+        if (state.expanded.has(kind)) {
+          state.expanded.delete(kind);
+        } else {
+          state.expanded.add(kind);
+        }
+        if (state.view.kind !== kind) {
+          setView(kind);
+        } else {
+          renderTree();
+        }
+      }
+
+      if (child) {
+        const kind = child.dataset.kind;
+        setView(kind, child.dataset.category);
+      }
+    });
+
+    tree.addEventListener("keydown", (event) => {
+      if (event.target.closest("[data-edit-key]")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const control = event.target.closest("[data-toggle], [data-kind]");
+      if (!control) return;
+      event.preventDefault();
+      control.click();
+    });
+
+    fileList.addEventListener("click", (event) => {
+      if (event.target.closest("[data-edit-key]")) return;
+      const item = event.target.closest("[data-id]");
+      if (!item) return;
+      state.selectedId = item.dataset.id;
+      renderList();
+      if (window.matchMedia("(max-width: 767px)").matches) {
+        const y = previewCard.getBoundingClientRect().top + window.pageYOffset - 16;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    });
+
+    fileList.addEventListener("keydown", (event) => {
+      if (event.target.closest("[data-edit-key]")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const item = event.target.closest("[data-id]");
+      if (!item) return;
+      event.preventDefault();
+      item.click();
+    });
+
+    mobileCategory.addEventListener("change", () => {
+      const [kind, value] = mobileCategory.value.split(":");
+      setView(kind, value);
+    });
+
+    searchInput.addEventListener("input", () => {
+      state.query = searchInput.value;
+      renderList();
+    });
+
+    document.querySelector("#collapseBtn").addEventListener("click", () => {
+      if (window.matchMedia("(max-width: 1199px)").matches) {
+        shell.classList.toggle("sidebar-open-tablet");
+      } else {
+        shell.classList.toggle("sidebar-collapsed");
+      }
+    });
+
+    document.querySelector("#scrollCue").addEventListener("click", () => {
+      const target = document.querySelector("#education");
+      const y = target.getBoundingClientRect().top + window.pageYOffset - 24;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    });
+
+    document.addEventListener("click", (event) => {
+      const image = event.target.closest("img[data-fullscreen-src]");
+      if (!image) return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (Date.now() - lastCarouselDragAt < 260) return;
+      openImageLightbox(image);
+    }, true);
+
+    lightboxClose.addEventListener("click", closeImageLightbox);
+
+    imageLightbox.addEventListener("click", (event) => {
+      if (event.target === imageLightbox) closeImageLightbox();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !imageLightbox.hidden) {
+        closeImageLightbox();
+      }
+    });
+
+    document.addEventListener("fullscreenchange", () => {
+      if (!document.fullscreenElement && !imageLightbox.hidden) {
+        hideImageLightbox();
+      }
+    });
+
+    previewCard.addEventListener("pointermove", (event) => {
+      if (window.matchMedia("(max-width: 920px)").matches) return;
+      const rect = previewCard.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      previewCard.style.setProperty("--tilt-y", `${x * 3}deg`);
+      previewCard.style.setProperty("--tilt-x", `${y * -3}deg`);
+    });
+
+    previewCard.addEventListener("pointerleave", () => {
+      previewCard.style.setProperty("--tilt-y", "0deg");
+      previewCard.style.setProperty("--tilt-x", "0deg");
+    });
+
+    const revealItems = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18 });
+      revealItems.forEach((item) => observer.observe(item));
+    } else {
+      revealItems.forEach((item) => item.classList.add("is-visible"));
+    }
+
+    migrateTitleEdits();
+    migratePreviewCopyEdits();
+    hydratePortfolioCopy();
+    renderTree();
+    renderMobilePicker();
+    renderList();
+  </script>
+
+
+
+
+
+
+</body></html>
